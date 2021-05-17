@@ -1,6 +1,7 @@
 # flutter_Projcets
 
-本项目汇集多个Flutter项目，适用于Flutter新手联系使用。项目中使用的接口为玩Android接口，以及国外开源接口。实现的效果如下所见：
+本项目汇集多个Flutter项目，适用于Flutter新手练习使用。
+项目中使用的接口为玩Android接口，以及国外开源接口。谨此感谢！
 
 ### 一、Poke项目
 效果如下：
