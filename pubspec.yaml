@@ -34,8 +34,10 @@ dependencies:
   fluttertoast: ^8.0.6
   json_serializable: any
   image_fade: ^0.2.1
+  get: any
   dio: ^4.0.0
-  crypto: ^3.0.1
+  logger: ^1.0.0
+
 
 dev_dependencies:
   flutter_test:

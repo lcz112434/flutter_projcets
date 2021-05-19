@@ -4,9 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_wanandroid/Zhihu/home.dart';
 
 import 'package:flutter_wanandroid/r.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import 'DatailsPage.dart';
@@ -14,7 +16,7 @@ import 'HomeData.dart';
 import 'ImageWidget.dart';
 
 void main() {
-  runApp(Myapp());
+  runApp(GetMaterialApp(home: Myapp(), debugShowCheckedModeBanner: false));
 }
 
 class Myapp extends StatelessWidget {
@@ -26,7 +28,7 @@ class Myapp extends StatelessWidget {
         designSize: Size(360, 690),
         builder: () => MaterialApp(
               debugShowCheckedModeBanner: false,
-              title: "WanAndroid项目",
+              title: "Poke项目",
               home: HomePage(),
             ));
   }
@@ -40,8 +42,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var url = Uri.parse(
-      "https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json");
 
   var name = "";
   HomeData homeData;
@@ -52,11 +52,6 @@ class _HomePageState extends State<HomePage> {
 
     var body = jsonDecode(uriResponse.body);
     homeData = HomeData.fromJson(body);
-    print(homeData.toJson());
-    print(homeData.toString());
-    print(homeData.pokemon.length);
-    name = homeData.pokemon[0].name;
-    Fluttertoast.showToast(msg: "${homeData.pokemon[0].name}");
     setState(() {});
   }
 
@@ -77,7 +72,6 @@ class _HomePageState extends State<HomePage> {
         children: [
           GestureDetector(
             onTap: () {
-              Fluttertoast.showToast(msg: "Hello,我是${item.name}");
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -106,24 +100,30 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(
-          child:Container(
-            alignment: Alignment.center,
-            child: Text('我是Drawer',style: TextStyle(fontSize: 30),),
-          )),
+          child: Container(
+        alignment: Alignment.center,
+        child: Text(
+          '我是Drawer',
+          style: TextStyle(fontSize: 30),
+        ),
+      )),
       appBar: AppBar(
+          bottomOpacity: 30.0,
           title: Text("Poke App"),
           centerTitle: true,
           backgroundColor: Colors.cyan,
-
-          leading: IconButton(
-              icon: Icon(Icons.apps),
-              onPressed: () {
-                Fluttertoast.showToast(msg: "点击了侧边栏按钮");
-              })),
+          leading: IconButton(icon: Icon(Icons.apps), onPressed: () {})),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.app_blocking_sharp),
+        onPressed: () {
+          Get.offAll(ZhiHuApp());
+        },
+      ),
       body: homeData == null
           ? Center(
               child: CircularProgressIndicator(),
-            ): GridView.count(
+            )
+          : GridView.count(
               //水平子Widget之间间距
               crossAxisSpacing: 10.0,
               //垂直子Widget之间间距
@@ -140,5 +140,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
