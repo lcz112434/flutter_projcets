@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/Poke/main.dart';
 import 'package:flutter_wanandroid/Zhihu/Log.dart';
+import 'package:flutter_wanandroid/Zhihu/home/TopPage.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:flutter_wanandroid/Zhihu/Api.dart';
@@ -14,6 +15,7 @@ import 'LikeData.dart';
 import 'RecommendData.dart';
 import 'TopData.dart';
 import 'home/LikePage.dart';
+import 'home/RecommendData.dart';
 
 /// <pre>
 ///      @author : Lichengze
@@ -72,12 +74,11 @@ class _HomePageState extends State<HomePager>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white12,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.app_blocking_sharp),
         backgroundColor: Colors.cyan,
         onPressed: () {
-          Get.offAll(new Myapp());
+          Get.offAll(Myapp());
         },
       ),
       appBar: AppBar(
@@ -149,8 +150,8 @@ class _HomePageState extends State<HomePager>
             )
           : TabBarView(controller: _tabController, children: [
               Likepage(_likeData),
-              Text(_recommendData.data.datas[0].title),
-              Text(_topData.data.datas[0].title),
+              RecommendPage(_recommendData),
+              TopPage(_topData)
             ]),
     );
   }

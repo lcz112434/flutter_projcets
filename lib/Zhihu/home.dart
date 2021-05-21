@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wanandroid/Zhihu/HomePage.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 /// <pre>
 ///     @author : Lichengze
@@ -13,7 +17,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 /// </pre>
 
 void main() {
-  runApp(GetMaterialApp(home:ZhiHuApp(),debugShowCheckedModeBanner:false));
+  runApp(GetMaterialApp(home: ZhiHuApp(), debugShowCheckedModeBanner: false));
 }
 
 class ZhiHuApp extends StatelessWidget {
@@ -29,5 +33,53 @@ class ZhiHuApp extends StatelessWidget {
               theme: ThemeData.dark(),
               home: HomePager(),
             ));
+  }
+}
+
+class WebViewExample extends StatefulWidget {
+  WebViewExample(this.url, this.title, {Key key}) : super(key: key);
+  String url;
+  String title;
+
+  @override
+  WebViewExampleState createState() => WebViewExampleState(url, title);
+}
+
+class WebViewExampleState extends State<WebViewExample> {
+  WebViewExampleState(this.url, this.title);
+
+  String url;
+  String title;
+
+  @override
+  void initState() {
+    super.initState();
+    // Enable hybrid composition.
+    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print(url);
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark(),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(title),
+          centerTitle: true,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_outlined),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+        body: WebView(
+          initialUrl: url, //JS执行模式 是否允许JS执行
+          javascriptMode: JavascriptMode.unrestricted,
+        ),
+      ),
+    );
   }
 }
