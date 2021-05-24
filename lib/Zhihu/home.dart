@@ -3,10 +3,14 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_wanandroid/DarkModeProvider.dart';
 import 'package:flutter_wanandroid/Zhihu/HomePage.dart';
+import 'package:flutter_wanandroid/Zhihu/Log.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flustars/flustars.dart';
 
 /// <pre>
 ///     @author : Lichengze
@@ -26,13 +30,16 @@ class ZhiHuApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: Size(360, 690),
-        builder: () => MaterialApp(
-              title: "仿知乎项目",
-              debugShowCheckedModeBanner: false,
-              theme: ThemeData.dark(),
-              home: HomePager(),
-            ));
+      designSize: Size(360, 690),
+      builder: () => MultiProvider(
+        providers: [ChangeNotifierProvider.value(value: DarkModeProvider())],
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData.dark(),
+          home: HomePager(),
+        ),
+      ),
+    );
   }
 }
 

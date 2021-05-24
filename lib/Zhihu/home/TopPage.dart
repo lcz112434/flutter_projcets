@@ -38,16 +38,17 @@ class _TopPageState extends State<TopPage> with AutomaticKeepAliveClientMixin {
     return ListView.separated(
         itemBuilder: (BuildContext context, int index) {
           var datas = _topData.data.datas[index];
-          var rng=new Random();
+          var rng = new Random();
           return GestureDetector(
-            onTap: () {Get.to(WebViewExample(datas.link,datas.title));},
+            onTap: () {
+              Get.to(WebViewExample(datas.link, datas.title));
+            },
             child: Container(
               color: Colors.black38,
               height: 95,
               padding: EdgeInsets.all(10),
               width: MediaQuery.of(context).size.width,
               child: Row(
-
                 children: <Widget>[
                   PaddingLeft(20),
                   Text(
@@ -60,8 +61,8 @@ class _TopPageState extends State<TopPage> with AutomaticKeepAliveClientMixin {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        width:220,
-                        height:45,
+                        width: 220,
+                        height: 45,
                         child: Text(
                           datas.title,
                           style: TextStyle(fontSize: 16, color: Colors.white70),
@@ -70,11 +71,20 @@ class _TopPageState extends State<TopPage> with AutomaticKeepAliveClientMixin {
                         ),
                       ),
                       PaddingBottom(10),
-                      Text('${rng.nextInt(1000)}万热度',style: _textStyle,),
+                      Text(
+                        '${rng.nextInt(1000)}万热度',
+                        style: _textStyle,
+                      ),
                     ],
                   ),
-                  Expanded(child: Text(''),),
-                  Image.network(datas.envelopePic,width: 60,height:150,),
+                  Expanded(
+                    child: Text(''),
+                  ),
+                  Image.network(
+                    datas.envelopePic,
+                    width: 60,
+                    height: 150,
+                  ),
                 ],
               ),
             ),

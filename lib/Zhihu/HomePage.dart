@@ -10,7 +10,11 @@ import 'package:get/get.dart';
 import 'package:flutter_wanandroid/Zhihu/Api.dart';
 import 'package:flutter_wanandroid/utlis/PaddingUtlis.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sp_util/sp_util.dart';
 
+import '../DarkModeProvider.dart';
 import 'LikeData.dart';
 import 'RecommendData.dart';
 import 'TopData.dart';
@@ -71,6 +75,15 @@ class _HomePageState extends State<HomePager>
     setState(() {});
   }
 
+  _incrementCounter2() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var int = prefs.getInt("DARKMODE");
+
+    int == 0 ? Provider.of<DarkModeProvider>(context, listen: false).changeMode(1)
+    : Provider.of<DarkModeProvider>(context, listen: false).changeMode(0);
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +98,10 @@ class _HomePageState extends State<HomePager>
         centerTitle: true,
         title: Container(
           padding: EdgeInsets.all(15.0),
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           height: 80,
           child: Card(
             shape: RoundedRectangleBorder(
@@ -93,38 +109,38 @@ class _HomePageState extends State<HomePager>
             ),
             child: Center(
                 child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.zoom_out_outlined,
-                  color: Colors.white70,
-                ),
-                PaddingRight(10),
-                Text(
-                  '坚果R1摄像头损坏',
-                  style: _textStyle,
-                ),
-                PaddingRight(30),
-                Text(
-                  '|',
-                  style: TextStyle(fontSize: 16.0, color: Colors.white70),
-                ),
-                PaddingRight(15),
-                GestureDetector(
-                  onTap: () {
-                    Fluttertoast.showToast(msg: "提问");
-                  },
-                  child: Row(
-                    children: [
-                      Icon(Icons.auto_fix_off,
-                          color: Colors.white70, size: 15.0),
-                      PaddingRight(5),
-                      Text('提问', style: _textStyle),
-                    ],
-                  ),
-                )
-              ],
-            )),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.zoom_out_outlined,
+                      color: Colors.white70,
+                    ),
+                    PaddingRight(10),
+                    Text(
+                      '坚果R1摄像头损坏',
+                      style: _textStyle,
+                    ),
+                    PaddingRight(30),
+                    Text(
+                      '|',
+                      style: TextStyle(fontSize: 16.0, color: Colors.white70),
+                    ),
+                    PaddingRight(15),
+                    GestureDetector(
+                      onTap: () {
+                        // _incrementCounter2();
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.auto_fix_off,
+                              color: Colors.white70, size: 15.0),
+                          PaddingRight(5),
+                          Text('提问', style: _textStyle),
+                        ],
+                      ),
+                    )
+                  ],
+                )),
           ),
         ),
         bottom: TabBar(
@@ -146,13 +162,13 @@ class _HomePageState extends State<HomePager>
       ),
       body: _likeData == null
           ? Center(
-              child: CircularProgressIndicator(),
-            )
+        child: CircularProgressIndicator(),
+      )
           : TabBarView(controller: _tabController, children: [
-              Likepage(_likeData),
-              RecommendPage(_recommendData),
-              TopPage(_topData)
-            ]),
+        Likepage(_likeData),
+        RecommendPage(_recommendData),
+        TopPage(_topData)
+      ]),
     );
   }
 }
