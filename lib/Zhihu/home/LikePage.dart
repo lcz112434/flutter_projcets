@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/utlis/PaddingUtlis.dart';
 import 'package:get/get.dart';
-import '../LikeData.dart';
+import '../data/LikeData.dart';
 import '../home.dart';
 
 /// <pre>

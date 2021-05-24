@@ -1,10 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_wanandroid/Zhihu/data/RecommendData.dart';
 import 'package:flutter_wanandroid/utlis/PaddingUtlis.dart';
 import 'package:get/get.dart';
 
-import '../RecommendData.dart';
+
 import '../home.dart';
 
 /// <pre>

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/utlis/PaddingUtlis.dart';
 import 'package:get/get.dart';
 
-import '../TopData.dart';
+import '../data/TopData.dart';
 import '../home.dart';
 
 /// <pre>

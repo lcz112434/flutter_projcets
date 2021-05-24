@@ -15,11 +15,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sp_util/sp_util.dart';
 
 import '../DarkModeProvider.dart';
-import 'LikeData.dart';
-import 'RecommendData.dart';
-import 'TopData.dart';
+import 'data/LikeData.dart';
+
+import 'data/RecommendData.dart';
+import 'data/TopData.dart';
 import 'home/LikePage.dart';
-import 'home/RecommendData.dart';
+import 'home/RecommendPage.dart';
 
 /// <pre>
 ///      @author : Lichengze
