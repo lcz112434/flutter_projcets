@@ -13,9 +13,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DarkModeProvider with ChangeNotifier {
   /// 深色模式 0: 关闭 1: 开启 2: 随系统
-  int _darkMode = 0;
+  static int _darkMode = 0;
 
-  int get darkMode => _darkMode;
+  static int get darkMode => _darkMode;
 
   SharedPreferences prefs;
 

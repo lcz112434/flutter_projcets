@@ -31,10 +31,9 @@ dependencies:
   flustars: ^2.0.1
   flutter_screenutil: ^5.0.0
   http: ^0.13.3
-  fluttertoast: ^8.0.6
   json_serializable: any
   image_fade: ^0.2.1
-  get: any
+  get: ^4.1.4
   dio: ^4.0.0
   logger: ^1.0.0
   webview_flutter: ^2.0.7
@@ -60,6 +59,9 @@ flutter:
     # assets-generator-begin
     # assets/images/*
     - assets/images/back.png
+    - assets/images/icon.jpg
+    - assets/images/like.png
+    - assets/images/no_like.png
   # assets-generator-end
 
   # An image asset can refer to one or more resolution-specific "variants", see

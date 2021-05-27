@@ -28,7 +28,7 @@ class _LikepageState extends State<Likepage>
   _LikepageState(this._likeData);
 
   LikeData _likeData;
-  TextStyle _textStyle = TextStyle(color: Colors.grey, fontSize: 13);
+  TextStyle _textStyle = TextStyle(fontSize: 13);
 
   Widget wordCard(DataElement data) {
     Widget markWight;
@@ -80,12 +80,14 @@ class _LikepageState extends State<Likepage>
           var data = _likeData.data.datas[index];
           var rng = new Random();
           return GestureDetector(
-            onTap:(){Get.to(WebViewExample(data.link,data.title));},
+            onTap: () {
+              Get.to(WebViewExample(data.link, data.title));
+            },
             child: Container(
               height: 190,
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(10),
-              color: Colors.black38,
+              // color: Colors.black38,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -100,7 +102,9 @@ class _LikepageState extends State<Likepage>
                       alignment: Alignment.centerLeft,
                       child: Text(
                         data.title,
-                        style: TextStyle(fontSize: 17, color: Colors.white70),
+                        style: TextStyle(
+                          fontSize: 17,
+                        ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       )),
@@ -110,16 +114,19 @@ class _LikepageState extends State<Likepage>
                     children: [
                       Text(
                         '${rng.nextInt(50)} 个赞同',
-                        style: _textStyle,
                       ),
                       PaddingRight(3),
-                      Text('${rng.nextInt(50)} 个评论', style: _textStyle),
+                      Text(
+                        '${rng.nextInt(50)} 个评论',
+                      ),
                       Expanded(
                         child: Text(''), // 中间用Expanded控件
                       ),
-                      Text('···',style: TextStyle(color: Colors.grey, fontSize: 20),),
+                      Text(
+                        '···',
+                        style: TextStyle(fontSize: 20),
+                      ),
                       PaddingRight(20),
-
                     ],
                   ),
                 ],

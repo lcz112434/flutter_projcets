@@ -28,7 +28,7 @@ class _TopPageState extends State<TopPage> with AutomaticKeepAliveClientMixin {
   _TopPageState(this._topData);
 
   TopData _topData;
-  TextStyle _textStyle = TextStyle(color: Colors.grey, fontSize: 13);
+  TextStyle _textStyle = TextStyle( fontSize: 13);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,6 @@ class _TopPageState extends State<TopPage> with AutomaticKeepAliveClientMixin {
               Get.to(WebViewExample(datas.link, datas.title));
             },
             child: Container(
-              color: Colors.black38,
               height: 95,
               padding: EdgeInsets.all(10),
               width: MediaQuery.of(context).size.width,
@@ -65,7 +64,7 @@ class _TopPageState extends State<TopPage> with AutomaticKeepAliveClientMixin {
                         height: 45,
                         child: Text(
                           datas.title,
-                          style: TextStyle(fontSize: 16, color: Colors.white70),
+                          style: TextStyle(fontSize: 16),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),

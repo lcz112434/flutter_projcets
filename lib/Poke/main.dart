@@ -7,13 +7,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_wanandroid/Zhihu/home.dart';
 
 import 'package:flutter_wanandroid/r.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import 'DatailsPage.dart';
 import 'HomeData.dart';
-import 'ImageWidget.dart';
+
 
 void main() {
   runApp(GetMaterialApp(home: Myapp(), debugShowCheckedModeBanner: false));

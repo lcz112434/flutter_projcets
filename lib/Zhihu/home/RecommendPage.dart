@@ -30,7 +30,7 @@ class _RecommendPageState extends State<RecommendPage>
   _RecommendPageState(this._likeData);
 
   RecommendData _likeData;
-  TextStyle _textStyle = TextStyle(color: Colors.grey, fontSize: 13);
+  TextStyle _textStyle = TextStyle( fontSize: 13);
 
   Widget wordCard(DataElement data) {
     Widget markWight;
@@ -98,7 +98,6 @@ class _RecommendPageState extends State<RecommendPage>
                   .size
                   .width,
               padding: EdgeInsets.all(10),
-              color: Colors.black38,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -116,7 +115,7 @@ class _RecommendPageState extends State<RecommendPage>
                       alignment: Alignment.centerLeft,
                       child: Text(
                         data.title,
-                        style: TextStyle(fontSize: 17, color: Colors.white70),
+                        style: TextStyle(fontSize: 17),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       )),
@@ -134,7 +133,7 @@ class _RecommendPageState extends State<RecommendPage>
                         child: Text(''), // 中间用Expanded控件
                       ),
                       Text('···',
-                        style: TextStyle(color: Colors.grey, fontSize: 20),),
+                        style: TextStyle( fontSize: 20),),
                       PaddingRight(20),
 
                     ],

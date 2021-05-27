@@ -9,12 +9,12 @@ import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:flutter_wanandroid/Zhihu/Api.dart';
 import 'package:flutter_wanandroid/utlis/PaddingUtlis.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sp_util/sp_util.dart';
 
 import '../DarkModeProvider.dart';
+import 'SearchPage.dart';
 import 'data/LikeData.dart';
 
 import 'data/RecommendData.dart';
@@ -39,7 +39,10 @@ class HomePager extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePager>
-    with SingleTickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   TextStyle _textStyle = TextStyle(color: Colors.white70);
   final List<Tab> _tabs = <Tab>[
     new Tab(text: '关注'),
@@ -55,6 +58,7 @@ class _HomePageState extends State<HomePager>
   void initState() {
     http();
     _tabController = TabController(vsync: this, length: _tabs.length);
+    print("执行网络请求");
     super.initState();
   }
 
@@ -76,13 +80,14 @@ class _HomePageState extends State<HomePager>
     setState(() {});
   }
 
-  _incrementCounter2() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var int = prefs.getInt("DARKMODE");
+  int IsDark;
 
-    int == 0 ? Provider.of<DarkModeProvider>(context, listen: false).changeMode(1)
-    : Provider.of<DarkModeProvider>(context, listen: false).changeMode(0);
+  SharedPreferences prefs;
 
+  void getSp() async {
+    prefs = await SharedPreferences.getInstance();
+    IsDark = prefs.getInt("DARKMODE");
+    setState(() {});
   }
 
   @override
@@ -90,7 +95,7 @@ class _HomePageState extends State<HomePager>
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.app_blocking_sharp),
-        backgroundColor: Colors.cyan,
+        // backgroundColor: Colors.cyan,
         onPressed: () {
           Get.offAll(Myapp());
         },
@@ -99,10 +104,7 @@ class _HomePageState extends State<HomePager>
         centerTitle: true,
         title: Container(
           padding: EdgeInsets.all(15.0),
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          width: MediaQuery.of(context).size.width,
           height: 80,
           child: Card(
             shape: RoundedRectangleBorder(
@@ -110,38 +112,50 @@ class _HomePageState extends State<HomePager>
             ),
             child: Center(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.zoom_out_outlined,
-                      color: Colors.white70,
-                    ),
-                    PaddingRight(10),
-                    Text(
-                      '坚果R1摄像头损坏',
-                      style: _textStyle,
-                    ),
-                    PaddingRight(30),
-                    Text(
-                      '|',
-                      style: TextStyle(fontSize: 16.0, color: Colors.white70),
-                    ),
-                    PaddingRight(15),
-                    GestureDetector(
-                      onTap: () {
-                        // _incrementCounter2();
-                      },
-                      child: Row(
-                        children: [
-                          Icon(Icons.auto_fix_off,
-                              color: Colors.white70, size: 15.0),
-                          PaddingRight(5),
-                          Text('提问', style: _textStyle),
-                        ],
-                      ),
-                    )
-                  ],
-                )),
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                    onTap: () {
+                      getSp();
+                      Get.to(SecarhPage(IsDark));
+                      Log.d("message");
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.zoom_out_outlined,
+                          color: Colors.amber,
+                        ),
+                        PaddingRight(10),
+                        Text(
+                          '坚果R1摄像头损坏',
+                          // style: _textStyle,
+                        ),
+                        PaddingRight(30),
+                        Text(
+                          '|',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            // color: Colors.white70
+                          ),
+                        ),
+                        PaddingRight(15),
+                        Row(
+                          children: [
+                            Icon(Icons.auto_fix_off,
+                                // color: Colors.white70,
+                                size: 15.0),
+                            PaddingRight(5),
+                            Text(
+                              '提问',
+                              // style: _textStyle
+                            ),
+                          ],
+                        ),
+                      ],
+                    ))
+              ],
+            )),
           ),
         ),
         bottom: TabBar(
@@ -163,13 +177,13 @@ class _HomePageState extends State<HomePager>
       ),
       body: _likeData == null
           ? Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : TabBarView(controller: _tabController, children: [
-        Likepage(_likeData),
-        RecommendPage(_recommendData),
-        TopPage(_topData)
-      ]),
+              Likepage(_likeData),
+              RecommendPage(_recommendData),
+              TopPage(_topData)
+            ]),
     );
   }
 }
