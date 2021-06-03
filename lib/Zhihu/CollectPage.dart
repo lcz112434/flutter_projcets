@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/utlis/PaddingUtlis.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'data/collectbean.dart';
@@ -37,6 +38,10 @@ class _CollectPageState extends State<CollectPage> {
     getdatas();
   }
 
+  void putlike(String title, bool key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(title, key);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +111,7 @@ class _CollectPageState extends State<CollectPage> {
                               actions: [
                                 FlatButton(onPressed: () {
                                   DeleteDatabase(int.parse(id.toString()));
+                                  putlike(title,false);
                                   Navigator.of(context).pop();
                                 }, child: Text('确定')),
                                 FlatButton(
