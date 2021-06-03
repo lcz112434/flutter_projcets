@@ -51,7 +51,7 @@ class _CollectPageState extends State<CollectPage> {
         centerTitle: true,
       ),
       body: mlist == null
-          ? Text('text')
+          ? Text('')
           : ListView.builder(
               itemCount: mlist.length,
               itemBuilder: (BuildContext context, int index) {
