@@ -3,6 +3,10 @@ import 'package:flutter_wanandroid/utlis/PaddingUtlis.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
+import 'dart:io';
+
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../DarkModeProvider.dart';
 import '../r.dart';
@@ -24,23 +28,19 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
-  bool _switchSelected = false; //维护单选开关状态
+  bool _switchSelected; //维护单选开关状态
   int IsDark;
 
   SharedPreferences prefs;
 
   void getSp() async {
+    _switchSelected = false;
     prefs = await SharedPreferences.getInstance();
-    IsDark = prefs.getInt("DARKMODE");
-    print(IsDark);
-    if (IsDark == 1) {
-      _switchSelected = false;
-    } else if (IsDark == 2) {
-      _switchSelected = true;
-    }
-    print(_switchSelected);
+    _switchSelected = prefs.getBool("ISDARK");
     setState(() {});
   }
+
+
 
   @override
   void initState() {
@@ -66,12 +66,12 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                   if (value == true) {
                     Provider.of<DarkModeProvider>(context, listen: false)
                         .changeMode(1);
+                    prefs.setBool("ISDARK", true);
                   } else {
                     Provider.of<DarkModeProvider>(context, listen: false)
                         .changeMode(2);
+                    prefs.setBool("ISDARK", false);
                   }
-                  IsDark = prefs.getInt("DARKMODE");
-                  print(IsDark);
                   //重新构建页面
                   setState(() {
                     _switchSelected = value;
@@ -127,11 +127,47 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
   Widget GoToWeb(String title, String url, String name) {
     return TextButton(
         onPressed: () {
-          Get.to(WebViewExample(url, title));
+          Get.to(MyWebView(url, title));
         },
         child: Text(name));
   }
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class MyWebView extends StatefulWidget {
+  MyWebView(this.url, this.title);
+
+  String url;
+  String title;
+
+  @override
+  WebViewExampleState createState() => WebViewExampleState(url, title);
+}
+
+class WebViewExampleState extends State<MyWebView> {
+  WebViewExampleState(this.url, this.title);
+
+  String url;
+  String title;
+
+  @override
+  void initState() {
+    super.initState();
+    // Enable hybrid composition.
+    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(title),
+          centerTitle: true,
+        ),
+        body: WebView(
+          initialUrl: url,
+        ));
+  }
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,6 +17,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flustars/flustars.dart';
 
 import 'MyPage.dart';
+import 'data/collectbean.dart';
 
 /// <pre>
 ///     @author : Lichengze
@@ -29,43 +31,60 @@ void main() {
   runApp(GetMaterialApp(home: ZhiHuApp(), debugShowCheckedModeBanner: false));
 }
 
-class ZhiHuApp extends StatelessWidget {
+class ZhiHuApp extends StatefulWidget {
   const ZhiHuApp({Key key}) : super(key: key);
+
+  @override
+  _ZhiHuAppState createState() => _ZhiHuAppState();
+}
+
+class _ZhiHuAppState extends State<ZhiHuApp> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getdatas();
+  }
 
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: Size(360, 690),
-      builder: () => MultiProvider(
-        providers: [
-          ChangeNotifierProvider.value(value: DarkModeProvider()),
-        ],
-        child: Consumer<DarkModeProvider>(
-          builder: (context, darkModeProvider, _) {
-            return DarkModeProvider.darkMode == 2
-                ? MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Flutter Demo',
-              theme: ThemeData(
-                primarySwatch: Colors.blue,
+        designSize: Size(360, 690),
+        builder: () => MultiProvider(
+              providers: [
+                ChangeNotifierProvider.value(value: DarkModeProvider()),
+              ],
+              child: Consumer<DarkModeProvider>(
+                builder: (context, darkModeProvider, _) {
+                  return darkModeProvider.darkMode == 2
+                      ? MaterialApp(
+                          debugShowCheckedModeBanner: false,
+                          title: 'Flutter Demo',
+                          theme: ThemeData(
+                            primarySwatch: Colors.blue,
+                          ),
+                          darkTheme: ThemeData.dark(),
+                          home: ZhihuHomePage(),
+                        )
+                      : MaterialApp(
+                          debugShowCheckedModeBanner: false,
+                          title: 'Flutter Demo',
+                          theme: darkModeProvider.darkMode == 1
+                              ? ThemeData.dark()
+                              : ThemeData(
+                                  primarySwatch: Colors.blue,
+                                ),
+                          home: ZhihuHomePage(),
+                        );
+                },
               ),
-              darkTheme: ThemeData.dark(),
-              home: ZhihuHomePage(),
-            )
-                : MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Flutter Demo',
-              theme: DarkModeProvider.darkMode == 1
-                  ? ThemeData.dark()
-                  : ThemeData(
-                primarySwatch: Colors.blue,
-              ),
-              home: ZhihuHomePage(),
-            );
-          },
-        ),
-      )
-    );
+            ));
+  }
+
+  void getdatas() async {
+    var db = await openDatabase('my_db.db');
+    await db.execute(
+        'CREATE TABLE ZhiHu (id INTEGER, author TEXT, img TEXT, title TEXT, body TEXT,link TEXT)');
   }
 }
 
@@ -128,31 +147,26 @@ class _ZhihuHomePageState extends State<ZhihuHomePage> {
 }
 
 class WebViewExample extends StatefulWidget {
-  WebViewExample(this.url, this.title, {Key key, this.islike})
-      : super(key: key);
-  String url;
-  String title;
-  bool islike=true;
+  WebViewExample(this.collectData, {Key key}) : super(key: key);
+  CollectData collectData;
 
   @override
-  WebViewExampleState createState() => WebViewExampleState(url, title,islike);
+  WebViewExampleState createState() => WebViewExampleState(collectData);
 }
 
 class WebViewExampleState extends State<WebViewExample> {
-  WebViewExampleState(this.url, this.title,this.ShowLike);
+  WebViewExampleState(this.collectData);
 
-  String url;
-  String title;
+  CollectData collectData;
   bool islike;
-  bool ShowLike;
 
   @override
   void initState() {
     super.initState();
     // Enable hybrid composition.
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
-    getlike(title);
-    print(islike);
+    getlike(collectData.title);
+    // print(islike);
   }
 
   void getlike(String title) async {
@@ -169,9 +183,29 @@ class WebViewExampleState extends State<WebViewExample> {
     prefs.setBool(title, key);
   }
 
+  Future<void> InsetDatabase(CollectData data) async {
+    var db = await openDatabase('my_db.db');
+
+    int recordId = await db.insert('ZhiHu', {
+      'id': '${data.id}',
+      'author': '${data.author}',
+      'title': '${data.title}',
+      'body': '${data.body}',
+      'img': '${data.img}',
+      'link': '${data.link}'
+    });
+    print(recordId);
+    print(db);
+  }
+
+  Future<void> DeleteDatabase(int id) async {
+    var db = await openDatabase('my_db.db');
+    var count = await db.delete('ZhiHu', where: 'id = ?', whereArgs: ['$id']);
+    print(count);
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(url);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark(),
@@ -182,12 +216,14 @@ class WebViewExampleState extends State<WebViewExample> {
                 onPressed: () {
                   if (islike) {
                     islike = false;
-                    putlike(title, false);
+                    putlike(collectData.title, false);
+                    DeleteDatabase(collectData.id);
                     setState(() {});
                   } else {
                     islike = true;
-                    putlike(title, true);
+                    putlike(collectData.title, true);
                     setState(() {});
+                    InsetDatabase(collectData);
                   }
                 },
                 child: islike == false
@@ -199,7 +235,7 @@ class WebViewExampleState extends State<WebViewExample> {
               alignment: Alignment.topLeft,
               width: 200,
               child: Text(
-                title,
+                collectData.title,
                 style: TextStyle(fontSize: 17),
               ),
             ),
@@ -207,12 +243,14 @@ class WebViewExampleState extends State<WebViewExample> {
             leading: IconButton(
               icon: Icon(Icons.arrow_back_outlined),
               onPressed: () {
-                Navigator.of(context).pop();
+                int a=1;
+                Navigator.of(context).pop(1);
+
               },
             ),
           ),
           body: WebView(
-            initialUrl: url, //JS执行模式 是否允许JS执行
+            initialUrl: collectData.link, //JS执行模式 是否允许JS执行
             javascriptMode: JavascriptMode.disabled,
           ),
         ));

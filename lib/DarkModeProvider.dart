@@ -13,18 +13,36 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DarkModeProvider with ChangeNotifier {
   /// 深色模式 0: 关闭 1: 开启 2: 随系统
-  static int _darkMode = 0;
+   int _darkMode = 0;
 
-  static int get darkMode => _darkMode;
+   int get darkMode => _darkMode;
 
   SharedPreferences prefs;
+
+  DarkModeProvider() {
+    init();
+  }
 
   void changeMode(int darkMode) async {
     prefs = await SharedPreferences.getInstance();
 
     prefs.setInt("DARKMODE", darkMode);
     _darkMode = prefs.getInt("DARKMODE");
-
+    if (darkMode == 1) {
+      prefs.setBool("ISDARK", true);
+    } else {
+      prefs.setBool("ISDARK", false);
+    }
     notifyListeners();
+  }
+
+  void init() async {
+    prefs = await SharedPreferences.getInstance();
+
+    var setInt = prefs.getInt("DARKMODE");
+    if (setInt != null) {
+      _darkMode = prefs.getInt("DARKMODE");
+    }
+    Log.d("setInt$setInt");
   }
 }

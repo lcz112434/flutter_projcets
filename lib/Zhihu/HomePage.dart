@@ -43,42 +43,19 @@ class _HomePageState extends State<HomePager>
   @override
   bool get wantKeepAlive => true;
 
-  TextStyle _textStyle = TextStyle(color: Colors.white70);
   final List<Tab> _tabs = <Tab>[
     new Tab(text: '关注'),
     new Tab(text: '推荐'),
     new Tab(text: '热榜'),
   ];
   var _tabController;
-  LikeData _likeData;
-  RecommendData _recommendData;
-  TopData _topData;
 
   @override
   void initState() {
-    http();
     _tabController = TabController(vsync: this, length: _tabs.length);
-    print("执行网络请求");
     super.initState();
   }
 
-  http() async {
-    String LikeApi = Api.BaseApi + "project/list/1/json?cid=294";
-    String RecommendApi = Api.BaseApi + "project/list/2/json?cid=294";
-    String TopApi = Api.BaseApi + "project/list/3/json?cid=294";
-
-    var LikeRsponse = await Dio().get(LikeApi);
-    var LikejsonDecode = jsonDecode(LikeRsponse.toString());
-    var RecommendRsponse = await Dio().get(RecommendApi);
-    var RecommendDecode = jsonDecode(RecommendRsponse.toString());
-    var TopRsponse = await Dio().get(TopApi);
-    var TopjsonDecode = jsonDecode(TopRsponse.toString());
-
-    _likeData = LikeData.fromJson(LikejsonDecode);
-    _recommendData = RecommendData.fromJson(RecommendDecode);
-    _topData = TopData.fromJson(TopjsonDecode);
-    setState(() {});
-  }
 
   int IsDark;
 
@@ -175,14 +152,10 @@ class _HomePageState extends State<HomePager>
           tabs: _tabs,
         ),
       ),
-      body: _likeData == null
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : TabBarView(controller: _tabController, children: [
-              Likepage(_likeData),
-              RecommendPage(_recommendData),
-              TopPage(_topData)
+      body:  TabBarView(controller: _tabController, children: [
+              Likepage(),
+              RecommendPage(),
+              TopPage()
             ]),
     );
   }
