@@ -48,7 +48,7 @@
   
   掘金：https://juejin.cn/user/615324842477726
   
-  邮箱：lcz3466601343@163.com
+  邮箱：lichengzed@163.com
   
   QQ: 3466610343
   
