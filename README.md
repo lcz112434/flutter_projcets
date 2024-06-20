@@ -34,7 +34,6 @@
 ![效果2](https://user-images.githubusercontent.com/49055241/119290306-db88aa00-bc7e-11eb-9f19-fc1a595cf000.jpg)
 ![效果3](https://user-images.githubusercontent.com/49055241/119290309-dc214080-bc7e-11eb-830d-6653e65820e3.jpg)
 ![效果6](https://upload-images.jianshu.io/upload_images/16805720-e302488f416055d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-![效果7](https://upload-images.jianshu.io/upload_images/16805720-49ba7a2b5d4cf893.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 ![效果8](https://upload-images.jianshu.io/upload_images/16805720-36faa244277e3157.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 ![效果9](https://upload-images.jianshu.io/upload_images/16805720-5896ceec02da98ae.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 ![效果4](https://user-images.githubusercontent.com/49055241/119481768-aadf6800-bd85-11eb-8abb-337508b7eb7c.jpg)
